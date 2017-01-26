@@ -1,3 +1,5 @@
+// +build js
+
 // Package router implements a client-side router for the rendering of
 // components with the Vecty GopherJS framework.
 //
