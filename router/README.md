@@ -1,4 +1,4 @@
-# Vecty Router [![GoDoc](https://godoc.org/github.com/pdf/vectyx/router?status.svg)](http://godoc.org/github.com/pdf/vectyx/router) ![License-MIT](http://img.shields.io/badge/license-MIT-red.svg)
+# [Vecty](https://github.com/gopherjs/vecty) Router [![GoDoc](https://godoc.org/github.com/pdf/vectyx/router?status.svg)](http://godoc.org/github.com/pdf/vectyx/router) ![License-MIT](http://img.shields.io/badge/license-MIT-red.svg)
 
 # router
 --
