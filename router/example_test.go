@@ -58,7 +58,7 @@ func Example() {
 		r.Handle(`/:userID`, &UserShow{})
 		r.Handle(`/:userID/network`, &UserNetwork{})
 	})
-	r.Handle(`/search/*`, &MyComponent{})
+	r.Handle(`/search/*`, &SearchComponent{})
 	r.Handle(`/`, &MyComponent{})
 
 	vecty.RenderBody(r.Body())
