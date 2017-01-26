@@ -7,7 +7,7 @@ import (
 	"github.com/pdf/vectyx/router"
 )
 
-// MyComponent is a vect component that accepts children
+// MyComponent is a Vecty component that accepts children
 type MyComponent struct {
 	vecty.Core
 	children vecty.ComponentOrHTML
