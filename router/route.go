@@ -33,6 +33,8 @@ func (r *route) match(path string) (score int, context *Context) {
 
 	matches := r.regexp.FindStringSubmatch(u.Path)
 	if len(matches) == 0 {
+		r.context = nil
+		r.lastRender = nil
 		return -1, nil
 	}
 
