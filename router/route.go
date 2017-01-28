@@ -26,7 +26,7 @@ func (r *route) match(path string) (score int, context *Context) {
 		return -1, nil
 	}
 	// Pin regexp to trailing slash
-	if u.Path[len(u.Path)] != '/' {
+	if u.Path[len(u.Path)-1] != '/' {
 		u.Path += `/`
 	}
 	params := u.Query()
