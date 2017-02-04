@@ -114,13 +114,15 @@ func (r *Router) currentPath() string {
 }
 
 // match walks the router returns the matching components for the current path
-func (r *Router) match(path string) vecty.ComponentOrHTML {
-	var children vecty.ComponentOrHTML
-	var result vecty.ComponentOrHTML
+func (r *Router) match(path string) (result vecty.ComponentOrHTML, context *Context) {
+	var (
+		children     vecty.ComponentOrHTML
+		childContext *Context
+	)
 
 	// Recursively render child routes
 	for _, router := range r.routers {
-		if children = router.match(path); children != nil {
+		if children, childContext = router.match(path); children != nil {
 			break
 		}
 	}
@@ -129,7 +131,7 @@ func (r *Router) match(path string) vecty.ComponentOrHTML {
 	var (
 		max, score int
 		winner     *route
-		context, c *Context
+		c          *Context
 	)
 	for _, route := range r.routes {
 		score, c = route.match(path)
@@ -137,12 +139,24 @@ func (r *Router) match(path string) vecty.ComponentOrHTML {
 			max = score
 			winner = route
 			context = c
+			if childContext != nil {
+				for k, v := range childContext.Params {
+					if _, ok := context.Params[k]; !ok {
+						context.Params[k] = v
+						continue
+					}
+					for _, s := range v {
+						context.Params[k] = append(context.Params[k], s)
+					}
+				}
+			}
 		}
 	}
 	if winner != nil {
 		context.Children = children
 		result = winner.render(context)
 	}
+	// No local result, but matched nested route, so use that instead
 	if result == nil && children != nil {
 		result = children
 	}
@@ -150,16 +164,17 @@ func (r *Router) match(path string) vecty.ComponentOrHTML {
 	if r.root != nil {
 		if score, context = r.root.match(path); score > 0 {
 			context.Children = result
-			return r.root.render(context)
+			return r.root.render(context), context
 		}
 	}
 
-	return result
+	return result, context
 }
 
 // update triggers a run of the router
 func (r *Router) update() vecty.ComponentOrHTML {
-	return r.match(r.currentPath())
+	result, _ := r.match(r.currentPath())
+	return result
 }
 
 // start initializes the router, ensures we have a hash component and attaches
