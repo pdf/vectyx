@@ -17,7 +17,7 @@ type anchor struct {
 }
 
 func (a *anchor) onClick(_ vecty.Event) {
-	Go(a.path, a.params)
+	GoWithParams(a.path, a.params)
 }
 
 // Render implements vecty.Component

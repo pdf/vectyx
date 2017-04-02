@@ -104,13 +104,8 @@ func (r *Router) walkPath() string {
 }
 
 // hash obtains the current browser location hash component
-func (r *Router) hash() string {
+func hash() string {
 	return js.Global.Get(`location`).Get(`hash`).String()
-}
-
-// currentPath extracts the path component from the current browser location hash
-func (r *Router) currentPath() string {
-	return strings.SplitN(r.hash(), `#`, 2)[1]
 }
 
 // match walks the router returns the matching components for the current path
@@ -173,7 +168,7 @@ func (r *Router) match(path string) (result vecty.ComponentOrHTML, context *Cont
 
 // update triggers a run of the router
 func (r *Router) update() vecty.ComponentOrHTML {
-	result, _ := r.match(r.currentPath())
+	result, _ := r.match(CurrentPath())
 	return result
 }
 
@@ -181,15 +176,25 @@ func (r *Router) update() vecty.ComponentOrHTML {
 // the event listener to trigger updates on hash change
 func (r *Router) start() vecty.ComponentOrHTML {
 	// Redirect to hash route if missing
-	if r.hash() == `` {
-		Go(`/`, nil)
+	if hash() == `` {
+		Go(`/`)
 	}
 	js.Global.Call(`addEventListener`, `hashchange`, r.update, true)
 	return r.update()
 }
 
+// CurrentPath returns the current path component of the location or hash fragment
+func CurrentPath() string {
+	return strings.SplitN(hash(), `#`, 2)[1]
+}
+
 // Go transitions the browser to a new location
-func Go(path string, params url.Values) {
+func Go(path string) {
+	GoWithParams(path, nil)
+}
+
+// GoWithParams transitions the browser to a new location, with query params
+func GoWithParams(path string, params url.Values) {
 	u, err := url.Parse(path)
 	if err != nil {
 		panic(err)
