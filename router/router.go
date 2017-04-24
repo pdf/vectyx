@@ -187,7 +187,12 @@ func (r *Router) start() vecty.ComponentOrHTML {
 
 // CurrentPath returns the current path component of the location or hash fragment
 func CurrentPath() string {
-	return strings.SplitN(hash(), `#`, 2)[1]
+	p := strings.SplitN(hash(), `#`, 2)[1]
+	u, err := url.Parse(p)
+	if err != nil {
+		return p
+	}
+	return u.Path
 }
 
 // Go transitions the browser to a new location
