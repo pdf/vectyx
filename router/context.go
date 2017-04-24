@@ -15,8 +15,9 @@ type Context struct {
 	// Children optionally contains any nested components that should be rendered
 	// by the handler.
 	Children vecty.ComponentOrHTML
-	// Rendered is `false` if this is the first time the component has been added
-	// to the tree.  If Rendered is `true`, the component should be re-rendered
-	// (ie - `vecty.Rerender()`) if an update is desired.
-	Rendered bool
+	// ShouldUpdate is `true` if the route change affects the component, but always
+	// `false` the first time a component is added to the tree. When ShouldUpdate is
+	// `true`, the component should be re-rendered (ie - `vecty.Rerender()`) if an
+	// update is desired.
+	ShouldUpdate bool
 }

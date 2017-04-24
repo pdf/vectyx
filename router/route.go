@@ -61,7 +61,7 @@ func (r *route) render(context *Context) vecty.ComponentOrHTML {
 		return r.lastRender
 	}
 
-	context.Rendered = r.context != nil
+	context.ShouldUpdate = context.ShouldUpdate && r.context != nil
 	r.context = context
 
 	var result vecty.ComponentOrHTML

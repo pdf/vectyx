@@ -18,8 +18,8 @@ func (c *MyComponent) OnRoute(ctx router.Context) {
 	// Do something here with ctx.Params, etc if desired
 
 	// Update children and re-render if required
-	c.children = ctx.Children
-	if ctx.Rendered {
+	if ctx.ShouldUpdate {
+		c.children = ctx.Children
 		vecty.Rerender(c)
 	}
 }

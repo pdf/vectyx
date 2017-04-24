@@ -149,6 +149,7 @@ func (r *Router) match(path string) (result vecty.ComponentOrHTML, context *Cont
 	}
 	if winner != nil {
 		context.Children = children
+		context.ShouldUpdate = true
 		result = winner.render(context)
 	}
 	// No local result, but matched nested route, so use that instead
@@ -159,6 +160,7 @@ func (r *Router) match(path string) (result vecty.ComponentOrHTML, context *Cont
 	if r.root != nil {
 		if score, context = r.root.match(path); score > 0 {
 			context.Children = result
+			context.ShouldUpdate = true
 			return r.root.render(context), context
 		}
 	}

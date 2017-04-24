@@ -20,12 +20,26 @@ var DefaultConfig = &Config{}
 ```
 DefaultConfig for convenience.
 
+#### func  CurrentPath
+
+```go
+func CurrentPath() string
+```
+CurrentPath returns the current path component of the location or hash fragment
+
 #### func  Go
 
 ```go
-func Go(path string, params url.Values)
+func Go(path string)
 ```
 Go transitions the browser to a new location
+
+#### func  GoWithParams
+
+```go
+func GoWithParams(path string, params url.Values)
+```
+GoWithParams transitions the browser to a new location, with query params
 
 #### func  Link
 
@@ -57,10 +71,11 @@ type Context struct {
 	// Children optionally contains any nested components that should be rendered
 	// by the handler.
 	Children vecty.ComponentOrHTML
-	// Rendered is `false` if this is the first time the component has been added
-	// to the tree.  If Rendered is `true`, the component should be re-rendered
-	// (ie - `vecty.Rerender()`) if an update is desired.
-	Rendered bool
+	// ShouldUpdate is `true` if the route change affects the component, but always
+	// `false` the first time a component is added to the tree. When ShouldUpdate is
+	// `true`, the component should be re-rendered (ie - `vecty.Rerender()`) if an
+	// update is desired.
+	ShouldUpdate bool
 }
 ```
 

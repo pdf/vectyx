@@ -15,7 +15,7 @@ type body struct {
 // OnRoute implements Handler
 func (b *body) OnRoute(ctx Context) {
 	b.children = ctx.Children
-	if ctx.Rendered {
+	if ctx.ShouldUpdate {
 		vecty.Rerender(b)
 	}
 }
