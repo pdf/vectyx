@@ -170,7 +170,7 @@ func (r *Router) match(path string) (result vecty.ComponentOrHTML, context *Cont
 
 // update triggers a run of the router
 func (r *Router) update() vecty.ComponentOrHTML {
-	result, _ := r.match(CurrentPath())
+	result, _ := r.match(currentPathWithParams())
 	return result
 }
 
@@ -185,9 +185,13 @@ func (r *Router) start() vecty.ComponentOrHTML {
 	return r.update()
 }
 
+func currentPathWithParams() string {
+	return strings.SplitN(hash(), `#`, 2)[1]
+}
+
 // CurrentPath returns the current path component of the location or hash fragment
 func CurrentPath() string {
-	p := strings.SplitN(hash(), `#`, 2)[1]
+	p := currentPathWithParams()
 	u, err := url.Parse(p)
 	if err != nil {
 		return p
