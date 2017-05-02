@@ -25,7 +25,7 @@ func (c *MyComponent) OnRoute(ctx router.Context) {
 
 	// Update children and re-render if required
 	c.children = ctx.Children
-	if ctx.Rendered {
+	if ctx.ShouldUpdate {
 		vecty.Rerender(c)
 	}
 }
