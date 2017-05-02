@@ -44,10 +44,18 @@ GoWithParams transitions the browser to a new location, with query params
 #### func  Link
 
 ```go
-func Link(path string, params url.Values, content vecty.ComponentOrHTML) vecty.ComponentOrHTML
+func Link(path string, content vecty.ComponentOrHTML) vecty.MarkupOrComponentOrHTML
 ```
 Link wraps the provided content in an anchor tag that transitions to a new
-location on click
+location on click.
+
+#### func  LinkWithParams
+
+```go
+func LinkWithParams(path string, params url.Values, content vecty.ComponentOrHTML) vecty.MarkupOrComponentOrHTML
+```
+LinkWithParams wraps the provided content in an anchor tag that transitions to a
+new location with URL parameters on click.
 
 #### type Config
 
