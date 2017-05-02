@@ -214,12 +214,6 @@ func GoWithParams(path string, params url.Values) {
 	js.Global.Get(`location`).Set(`hash`, u.RequestURI())
 }
 
-// Link wraps the provided content in an anchor tag that transitions to a new
-// location on click
-func Link(path string, params url.Values, content vecty.ComponentOrHTML) vecty.ComponentOrHTML {
-	return &anchor{path: path, params: params, children: content}
-}
-
 // New instantiates a new router.  If the config argument is nil, DefaultConfig
 // will be used.
 func New(config *Config) *Router {
