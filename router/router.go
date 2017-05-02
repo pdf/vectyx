@@ -140,9 +140,7 @@ func (r *Router) match(path string) (result vecty.ComponentOrHTML, context *Cont
 						context.Params[k] = v
 						continue
 					}
-					for _, s := range v {
-						context.Params[k] = append(context.Params[k], s)
-					}
+					context.Params[k] = append(context.Params[k], v...)
 				}
 			}
 		}
