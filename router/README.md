@@ -1,5 +1,7 @@
 # [Vecty](https://github.com/gopherjs/vecty) Router [![GoDoc](https://godoc.org/github.com/pdf/vectyx/router?status.svg)](http://godoc.org/github.com/pdf/vectyx/router) ![License-MIT](http://img.shields.io/badge/license-MIT-red.svg)
 
+## NOTE: packages in this repository are experimental, and should not be relied upon.  Once they transition out of experimental status, they will be moved to permanent repositories.
+
 # router
 --
     import "github.com/pdf/vectyx/router"
