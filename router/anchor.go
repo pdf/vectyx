@@ -29,7 +29,7 @@ func (a *anchor) onClick(_ *vecty.Event) {
 func (a *anchor) Render() *vecty.HTML {
 	return elem.Anchor(
 		prop.Href(`javascript:;`),
-		event.Click(a.onClick),
+		event.Click(a.onClick).PreventDefault().StopPropagation(),
 		a.children,
 	)
 }
