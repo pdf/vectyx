@@ -120,8 +120,6 @@ func newRoute(pattern string, handler handlerOrFunc) *route {
 		r.handler = h
 	case HandlerFunc:
 		r.handlerFunc = h
-	default:
-		panic(`Invalid handler passed to newRoute`)
 	}
 
 	return r

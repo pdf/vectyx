@@ -55,8 +55,10 @@ func (r *Router) Group(pattern string, h Handler, group func(r *Router)) {
 	router := New(r.config)
 	router.parent = r
 	router.pattern = pattern
-	router.root = newRoute(r.canonical(pattern), h)
 	r.routers = append(r.routers, router)
+	if h != nil {
+		router.root = newRoute(r.canonical(pattern), h)
+	}
 	group(router)
 }
 
