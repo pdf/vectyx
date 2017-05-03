@@ -111,29 +111,36 @@ func hash() string {
 }
 
 // match walks the router returns the matching components for the current path
-func (r *Router) match(path string) (result vecty.ComponentOrHTML, context *Context) {
+func (r *Router) match(path string) (score int, result vecty.ComponentOrHTML, context *Context) {
 	var (
-		children     vecty.ComponentOrHTML
-		childContext *Context
+		max, matchScore int
+		children        vecty.ComponentOrHTML
+		childContext    *Context
+		child           vecty.ComponentOrHTML
+		c               *Context
 	)
 
 	// Recursively render child routes
 	for _, router := range r.routers {
-		if children, childContext = router.match(path); children != nil {
-			break
+		matchScore, child, c = router.match(path)
+		if matchScore > max {
+			max = matchScore
+			childContext = c
+			children = child
 		}
+	}
+	if children != nil {
+		score = max
 	}
 
 	// Render local routes
 	var (
-		max, score int
-		winner     *route
-		c          *Context
+		winner *route
 	)
 	for _, route := range r.routes {
-		score, c = route.match(path)
-		if score > max {
-			max = score
+		matchScore, c = route.match(path)
+		if matchScore > max {
+			max = matchScore
 			winner = route
 			context = c
 			if childContext != nil {
@@ -150,6 +157,7 @@ func (r *Router) match(path string) (result vecty.ComponentOrHTML, context *Cont
 	if winner != nil {
 		context.Children = children
 		context.ShouldUpdate = true
+		score = max
 		result = winner.render(context)
 	}
 	// No local result, but matched nested route, so use that instead
@@ -158,19 +166,19 @@ func (r *Router) match(path string) (result vecty.ComponentOrHTML, context *Cont
 	}
 
 	if r.root != nil {
-		if score, context = r.root.match(path); score > 0 {
+		if matchScore, context = r.root.match(path); matchScore > 0 {
 			context.Children = result
 			context.ShouldUpdate = true
-			return r.root.render(context), context
+			return score, r.root.render(context), context
 		}
 	}
 
-	return result, context
+	return score, result, context
 }
 
 // update triggers a run of the router
 func (r *Router) update() vecty.ComponentOrHTML {
-	result, _ := r.match(currentPathWithParams())
+	_, result, _ := r.match(currentPathWithParams())
 	return result
 }
 
