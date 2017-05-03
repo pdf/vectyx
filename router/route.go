@@ -56,13 +56,22 @@ func (r *route) match(path string) (score int, context *Context) {
 	return r.score, context
 }
 
+func (r *route) modified(context *Context) bool {
+	return r.context == nil || r.context.Children != context.Children || r.dirtyParams(context.Params)
+}
+
 func (r *route) render(context *Context) vecty.ComponentOrHTML {
+	modified := r.modified(context)
+	if !modified {
+		context.ShouldUpdate = false
+	}
 	context.ShouldUpdate = context.ShouldUpdate && r.context != nil
+
 	if r.handler != nil {
 		r.handler.OnRoute(*context)
 	}
 
-	if r.context != nil && r.context.Children == context.Children && !r.dirtyParams(context.Params) {
+	if !modified {
 		return r.lastRender
 	}
 
