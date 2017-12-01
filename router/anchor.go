@@ -26,22 +26,24 @@ func (a *anchor) onClick(_ *vecty.Event) {
 }
 
 // Render implements vecty.Component
-func (a *anchor) Render() *vecty.HTML {
+func (a *anchor) Render() vecty.ComponentOrHTML {
 	return elem.Anchor(
-		prop.Href(`javascript:;`),
-		event.Click(a.onClick).PreventDefault().StopPropagation(),
+		vecty.Markup(
+			prop.Href(`javascript:;`),
+			event.Click(a.onClick).PreventDefault().StopPropagation(),
+		),
 		a.children,
 	)
 }
 
 // LinkWithParams wraps the provided content in an anchor tag that transitions
 // to a new location with URL parameters on click.
-func LinkWithParams(path string, params url.Values, content vecty.ComponentOrHTML) vecty.MarkupOrComponentOrHTML {
+func LinkWithParams(path string, params url.Values, content vecty.ComponentOrHTML) vecty.ComponentOrHTML {
 	return &anchor{path: path, params: params, children: content}
 }
 
 // Link wraps the provided content in an anchor tag that transitions to a new
 // location on click.
-func Link(path string, content vecty.ComponentOrHTML) vecty.MarkupOrComponentOrHTML {
+func Link(path string, content vecty.ComponentOrHTML) vecty.ComponentOrHTML {
 	return LinkWithParams(path, nil, content)
 }
