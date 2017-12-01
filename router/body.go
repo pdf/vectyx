@@ -21,9 +21,9 @@ func (b *body) OnRoute(ctx Context) {
 }
 
 // Render implements vecty.Component
-func (b *body) Render() *vecty.HTML {
+func (b *body) Render() vecty.ComponentOrHTML {
 	return elem.Body(
-		prop.ID(`Body`),
+		vecty.Markup(prop.ID(`Body`)),
 		b.children,
 	)
 }
